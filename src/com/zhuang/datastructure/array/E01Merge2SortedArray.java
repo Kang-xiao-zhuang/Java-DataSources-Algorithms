@@ -10,7 +10,7 @@ public class E01Merge2SortedArray {
     public static void main(String[] args) {
         int[] a1 = {1, 5, 6, 2, 4, 10, 11};
         int[] a2 = new int[a1.length];
-//        merge(a1, 0, 2, 3, 6, a2, 0);
+        merge(a1, 0, 2, 3, 6, a2, 0);
         merge(a1, 0, 2, 3, 6, a2);
         System.out.println(Arrays.toString(a2));
         System.arraycopy(a2, 0, a1, 0, a2.length);
