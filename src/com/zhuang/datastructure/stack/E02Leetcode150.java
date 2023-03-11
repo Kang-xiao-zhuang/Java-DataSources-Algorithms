@@ -1,4 +1,4 @@
-package com.zhuang.datastructure.queue;
+package com.zhuang.datastructure.stack;
 
 import java.util.LinkedList;
 
