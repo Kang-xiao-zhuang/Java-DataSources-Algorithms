@@ -1,7 +1,5 @@
-package com.zhuang.datastructure.queue;
+package com.zhuang.datastructure.stack;
 
-
-import com.zhuang.datastructure.stack.ArrayStack;
 
 import java.util.*;
 
