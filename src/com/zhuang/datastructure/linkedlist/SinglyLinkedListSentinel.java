@@ -18,12 +18,11 @@ public class SinglyLinkedListSentinel implements Iterable<Integer> {
         list.addLast(3);
         list.addFirst(4);
         list.remove(2);
-        list.loop1(e -> {
-            System.out.println("e = " + e);
-        });
+        list.loop1(e -> System.out.println("e = " + e));
     }
 
-    private Node head = new Node(666, null); // 头指针
+    // 头指针
+    private final Node head = new Node(666, null);
 
     @Override
     public Iterator<Integer> iterator() {
