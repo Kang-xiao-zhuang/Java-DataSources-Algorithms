@@ -51,6 +51,7 @@ public class E01Leetcode23 {
         return s.next;
     }
 
+
     public static void main(String[] args) {
         ListNode[] lists = {
                 ListNode.of(1, 4, 5),
