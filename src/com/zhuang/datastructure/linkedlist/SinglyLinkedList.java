@@ -20,7 +20,6 @@ public class SinglyLinkedList implements Iterable<Integer> {
         });
     }
 
-
     // 头指针
     private Node head = null;
 
@@ -71,6 +70,11 @@ public class SinglyLinkedList implements Iterable<Integer> {
         head = new Node(value, head);
     }
 
+    /**
+     * 找到最后的节点
+     *
+     * @return Node
+     */
     private Node findLast() {
         if (head == null) {
             // 空链表
@@ -82,7 +86,6 @@ public class SinglyLinkedList implements Iterable<Integer> {
         while (p.next != null) {
             p = p.next;
         }
-
         return p;
     }
 
@@ -101,6 +104,12 @@ public class SinglyLinkedList implements Iterable<Integer> {
         last.next = new Node(value, null);
     }
 
+    /**
+     * 查找指定节点的索引值
+     *
+     * @param index int
+     * @return Node
+     */
     private Node findNode(int index) {
         int i = 0;
         for (Node p = head; p != null; p = p.next, i++) {
@@ -222,7 +231,6 @@ public class SinglyLinkedList implements Iterable<Integer> {
         if (curr == null) {
             return;
         }
-
         before.accept(curr.value);
         recursion(curr.next, before, after);
         after.accept(curr.value);
