@@ -37,11 +37,12 @@ public class BSTTree1 {
 
     /**
      * <h3>查找关键字对应的值</h3>
+     * 非递归实现
      *
      * @param key 关键字
      * @return 关键字对应的值
      */
-    public Object get(int key) {
+    public Object doGet(int key) {
         BSTNode node = root;
         while (node != null) {
             if (key < node.key) {
@@ -56,6 +57,26 @@ public class BSTTree1 {
     }
 
     /**
+     * <h3>查找关键字对应的值</h3>
+     * 递归实现
+     *
+     * @param key 关键字
+     * @return 关键字对应的值
+     */
+    private Object doGet(BSTNode node, int key) {
+        if (node == null) {
+            return null; // 没找到
+        }
+        if (key < node.key) {
+            return doGet(node.left, key); // 向左找
+        } else if (node.key < key) {
+            return doGet(node.right, key); // 向右找
+        } else {
+            return node.value; // 找到了
+        }
+    }
+
+    /**
      * <h3>查找最小关键字对应值</h3>
      *
      * @return 关键字对应的值
@@ -64,6 +85,13 @@ public class BSTTree1 {
         return min(root);
     }
 
+    /**
+     * 查找最小值
+     * 一直向左找，直到为空
+     *
+     * @param node BSTNode
+     * @return Object
+     */
     private Object min(BSTNode node) {
         if (node == null) {
             return null;
@@ -84,6 +112,13 @@ public class BSTTree1 {
         return max(root);
     }
 
+    /**
+     * 查找最大值
+     * 一直向右找，直到为空
+     *
+     * @param node BSTNode
+     * @return Object
+     */
     private Object max(BSTNode node) {
         if (node == null) {
             return null;
@@ -97,6 +132,7 @@ public class BSTTree1 {
 
     /**
      * <h3>存储关键字和对应值</h3>
+     * 递归实现
      *
      * @param key   关键字
      * @param value 值
@@ -105,18 +141,55 @@ public class BSTTree1 {
         root = doPut(root, key, value);
     }
 
+
     private BSTNode doPut(BSTNode node, int key, Object value) {
+        // 为空 创建新的节点
         if (node == null) {
             return new BSTNode(key, value);
         }
+        // 小于，放左边
         if (key < node.key) {
             node.left = doPut(node.left, key, value);
+            // 大于，放右边
         } else if (node.key < key) {
             node.right = doPut(node.right, key, value);
         } else {
+            // 等于 直接更新值
             node.value = value;
         }
         return node;
+    }
+
+    /**
+     * <h3>存储关键字和对应值</h3>
+     * 非递归实现
+     *
+     * @param key   关键字
+     * @param value 值
+     */
+    public void put2(int key, Object value) {
+        BSTNode node = root;
+        BSTNode parent = null;
+        while (node != null) {
+            parent = node;
+            if (key < node.key) {
+                node = node.left;
+            } else if (node.key < key) {
+                node = node.right;
+            } else {
+                // 1. key 存在则更新
+                node.value = value;
+                return;
+            }
+        }
+        // 2. key 不存在则新增
+        if (parent == null) {
+            root = new BSTNode(key, value);
+        } else if (key < parent.key) {
+            parent.left = new BSTNode(key, value);
+        } else {
+            parent.right = new BSTNode(key, value);
+        }
     }
 
     /**
@@ -127,6 +200,7 @@ public class BSTTree1 {
      */
     public Object predecessor(int key) {
         BSTNode p = root;
+        // 自从左而来
         BSTNode ancestorFromLeft = null;
         while (p != null) {
             if (key < p.key) {
@@ -147,8 +221,7 @@ public class BSTTree1 {
             return max(p.left);
         }
         // 找到节点 情况2：节点没有左子树，若离它最近的、自左而来的祖先就是前任
-        return ancestorFromLeft != null ?
-                ancestorFromLeft.value : null;
+        return ancestorFromLeft != null ? ancestorFromLeft.value : null;
     }
 
     /**
@@ -159,6 +232,7 @@ public class BSTTree1 {
      */
     public Object successor(int key) {
         BSTNode p = root;
+        // 自从右而来
         BSTNode ancestorFromRight = null;
         while (p != null) {
             if (key < p.key) {
@@ -179,8 +253,7 @@ public class BSTTree1 {
             return min(p.right);
         }
         // 找到节点 情况2：节点没有右子树，若离它最近的、自右而来的祖先就是后任
-        return ancestorFromRight != null ?
-                ancestorFromRight.value : null;
+        return ancestorFromRight != null ? ancestorFromRight.value : null;
     }
 
     /**
@@ -234,49 +307,55 @@ public class BSTTree1 {
         return s;
     }
 
-//    public Object delete(int key) {
-//        BSTNode p = root;
-//        BSTNode parent = null;
-//        while (p != null) {
-//            if (key < p.key) {
-//                parent = p;
-//                p = p.left;
-//            } else if (p.key < key) {
-//                parent = p;
-//                p = p.right;
-//            } else {
-//                break;
-//            }
-//        }
-//        if (p == null) {
-//            return null;
-//        }
-//        // 删除操作
-//        if (p.left == null) {
-//            shift(parent, p, p.right); // 情况1
-//        } else if (p.right == null) {
-//            shift(parent, p, p.left); // 情况2
-//        } else {
-//            // 情况4
-//            // 4.1 被删除节点找后继
-//            BSTNode s = p.right;
-//            BSTNode sParent = p; // 后继父亲
-//            while (s.left != null) {
-//                sParent = s;
-//                s = s.left;
-//            }
-//            // 后继节点即为 s
-//            if (sParent != p) { // 不相邻
-//                // 4.2 删除和后继不相邻, 处理后继的后事
-//                shift(sParent, s, s.right); // 不可能有左孩子
-//                s.right = p.right;
-//            }
-//            // 4.3 后继取代被删除节点
-//            shift(parent, p, s);
-//            s.left = p.left;
-//        }
-//        return p.value;
-//    }
+    /**
+     * <h3>根据关键字删除</h3>
+     *
+     * @param key 关键字
+     * @return 被删除关键字对应值
+     */
+    public Object delete(int key) {
+        BSTNode p = root;
+        BSTNode parent = null;
+        while (p != null) {
+            if (key < p.key) {
+                parent = p;
+                p = p.left;
+            } else if (p.key < key) {
+                parent = p;
+                p = p.right;
+            } else {
+                break;
+            }
+        }
+        if (p == null) {
+            return null;
+        }
+        // 删除操作
+        if (p.left == null) {
+            shift(parent, p, p.right); // 情况1
+        } else if (p.right == null) {
+            shift(parent, p, p.left); // 情况2
+        } else {
+            // 情况4
+            // 4.1 被删除节点找后继
+            BSTNode s = p.right;
+            BSTNode sParent = p; // 后继父亲
+            while (s.left != null) {
+                sParent = s;
+                s = s.left;
+            }
+            // 后继节点即为 s
+            if (sParent != p) { // 不相邻
+                // 4.2 删除和后继不相邻, 处理后继的后事
+                shift(sParent, s, s.right); // 不可能有左孩子
+                s.right = p.right;
+            }
+            // 4.3 后继取代被删除节点
+            shift(parent, p, s);
+            s.left = p.left;
+        }
+        return p.value;
+    }
 
     /**
      * 托孤方法

@@ -38,12 +38,15 @@ public class BSTTree2<K extends Comparable<K>, V> {
                 0 key == p.key
                 1 key > p.key
              */
-            int result = key.compareTo(p.key);
-            if (result < 0) {
+            int cmp = key.compareTo(p.key);
+            // 小于
+            if (cmp < 0) {
                 p = p.left;
-            } else if (result > 0) {
+                // 大于
+            } else if (cmp > 0) {
                 p = p.right;
             } else {
+                // 等于
                 return p.value;
             }
         }
